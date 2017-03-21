@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from .models import Order, Customer
 from .serializers import OrderSerializer, CustomerSerializer
 
@@ -10,7 +10,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
 
-class CustomerViewSet(viewsets.ModelViewSet):
+class CustomerViewSet(mixins.RetrieveModelMixin,
+                      viewsets.GenericViewSet):
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
