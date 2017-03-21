@@ -12,6 +12,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 class CustomerViewSet(mixins.RetrieveModelMixin,
                       viewsets.GenericViewSet):
+    """
+        View Set is Limited to retrieve only
+    """
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer

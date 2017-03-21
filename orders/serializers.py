@@ -34,6 +34,10 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         return order
 
     def update(self, instance, validated_data):
+        """
+            PUT/PATCH Support for full form update or partial Updates
+
+        """
         customer_name = validated_data.get('customer_name', instance.customer_name)
         customer_address = validated_data.get('customer_address', instance.customer_address)
         pizza_id = validated_data.get('pizza_id', instance.pizza.id)
