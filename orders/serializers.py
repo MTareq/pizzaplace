@@ -9,7 +9,8 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
 
         model = Order
-        fields = ('pizza_id', 'pizza_size', 'customer_name', 'customer_address', 'customer', 'pizza')
+        fields = ('id', 'pizza_id', 'pizza', 'pizza_size', 'customer_name', 'customer_address', 'customer', )
+        read_only_fields = ('id',)
 
     customer_name = serializers.CharField(required=True)
     customer_address = serializers.CharField(required=True)
@@ -31,6 +32,24 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         order = Order.objects.create(pizza=pizza, customer=customer, **validated_data)
 
         return order
+
+    def update(self, instance, validated_data):
+        customer_name = validated_data.get('customer_name', instance.customer_name)
+        customer_address = validated_data.get('customer_address', instance.customer_address)
+        pizza_id = validated_data.get('pizza_id', instance.pizza.id)
+        pizza_size = validated_data.get('pizza_size', instance.pizza_size)
+        try:
+            pizza = Pizza.objects.get(id=pizza_id)
+        except Pizza.DoesNotExist:
+            raise serializers.ValidationError("Pizza Does Not Exist")
+        customer, created = Customer.objects.get_or_create(name=customer_name, address=customer_address)
+        instance.pizza = pizza
+        instance.pizza_size = pizza_size
+        instance.customer = customer
+        instance.customer_name = customer_name
+        instance.customer_address = customer_address
+
+        return instance
 
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
