@@ -52,6 +52,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         instance.customer = customer
         instance.customer_name = customer_name
         instance.customer_address = customer_address
+        instance.save()
 
         return instance
 
