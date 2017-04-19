@@ -2,7 +2,7 @@
 
 **Create virtualenv**
 
-    virtualenv --python=python3 moberries
+    virtualenv --python=python3 venv
     ./moberries/bin/activate
     
 **Install dependencies**
